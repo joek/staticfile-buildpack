@@ -18,6 +18,7 @@ export LD_LIBRARY_PATH=$APP_ROOT/nginx/lib:$LD_LIBRARY_PATH
 conf_file=$APP_ROOT/nginx/conf/nginx.conf
 if [ -f $APP_ROOT/public/nginx.conf ]
 then
+  echo "Use local nginx config."
   conf_file=$APP_ROOT/public/nginx.conf
 fi
 
@@ -28,6 +29,8 @@ erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf
 
 touch $APP_ROOT/nginx/logs/access.log
 touch $APP_ROOT/nginx/logs/error.log
+
+echo "Start nginx."
 
 (tail -f -n 0 $APP_ROOT/nginx/logs/*.log &)
 exec $APP_ROOT/nginx/sbin/nginx -p $APP_ROOT/nginx -c $APP_ROOT/nginx/conf/nginx.conf
